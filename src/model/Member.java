@@ -1,5 +1,6 @@
+package model;
 
-class Member {
+public class Member {
     private int member_id;
     private String name;
     private String email;
@@ -26,5 +27,14 @@ class Member {
     
     public String getPhoneNumber(){
         return phoneNumber;
+    }
+
+    @Override 
+
+    public String toString(){
+        return "Member_Id :" + member_id +
+                "\nMember_Name :" + name +
+                "\nMember_Email :" + name +
+                "\nMember_PhoneNumber :" + phoneNumber; 
     }
 }

@@ -1,10 +1,12 @@
+package model;
 
-class Book{
+public class Book{
     private int bookId;
     private String title;
     private String author;
     private String category;
     private boolean isAvailable;
+    private Member borrowedBy;
 
     public Book(int bookId, String title,String author,String category, boolean isAvailable){
         this.bookId = bookId;
@@ -31,6 +33,10 @@ class Book{
         return category;
     }
 
+    public Member getBorrowedBy(){
+        return borrowedBy;
+    }
+
     public boolean isAvailable(){
         return isAvailable;
     }
@@ -38,5 +44,34 @@ class Book{
     //Setters to change the data fields 
     public void setAvailability(boolean isAvailable){
         this.isAvailable = isAvailable; 
+    }
+
+    public void setBorrowedMember(Member member){
+        this.borrowedBy = member;
+    }
+
+
+    
+
+    /*
+    @Override tells the compiler:
+
+    "I am replacing a method that already exists in the parent class."
+
+    Since every Java class automatically extends Object, the Book class already has a toString() method inherited from Object.
+
+    By writing your own version, you're saying:
+
+    "Don't use the default implementation. Use mine instead."
+     */
+
+    @Override
+    public String toString(){
+        return "Book Id : " + bookId +
+                "\nTitle :" + title +
+                "\nAuthor :" + author +
+                "\nCategory :" + category +
+                "\nAvailable :" + (isAvailable ? "Yes" : "No");
+                
     }
 }

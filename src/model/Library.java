@@ -1,3 +1,4 @@
+package model;
 import java.util.*;
 
 public class Library {
@@ -14,5 +15,13 @@ public class Library {
     }
     public void addMember(Member member){
         members.add(member);
+    }
+    
+    public List<Book> getBooks(){
+        return books;
+    }
+
+    public List<Member> getMembers(){
+        return members;
     }
 }
