@@ -24,4 +24,70 @@ public class Library {
     public List<Member> getMembers(){
         return members;
     }
+
+    public Book getBookByBookId(int bookId){
+        for(Book book : books){
+            // book.getBookId() because bookid is private can't be accessed directly in Library class
+            if(book.getBookId() == bookId){
+                return book;
+            }
+        }
+        return null;
+    }
+    public Member getMemberByMemberId(int memberId){
+        for(Member member : members){
+            
+            if(member.getMemberId() == memberId){
+                return member;
+            }
+        }
+        return null;
+    }
+
+    public String borrowBook(int memberId, int bookId){
+        //Passed member and book
+        Member member = getMemberByMemberId(memberId);
+
+        //First checking the member is registered or not
+        if(member == null){
+            return "MEMBER_NOT_FOUND";
+        }
+        
+        Book book = getBookByBookId(bookId);
+
+        //Now check weather book is present or not 
+        if(book == null){
+            return "BOOK_NOT_FOUND";
+        }
+
+        //Now if book is present check its availability
+        if(book.isAvailable() == false){
+            return "BOOK_IS_ALREADY_BORROWED";
+        }
+        book.setAvailability(false);
+        book.setBorrowedMember(member);
+        return "SUCCESS";
+
+        
+    }
+
+    public String returnBook(int bookId){
+        //Check Book is present or not in our library 
+        // ex. if user tried to return bookId = 999 
+        // which never existed in our library hence we are checking
+        Book book = getBookByBookId(bookId);
+        if(book == null){
+            return "BOOK_NOT_FOUND";
+        }
+
+        //// A book can only be returned if it is currently borrowed.
+        if(book.isAvailable() == true){
+            return "BOOK_NOT_BORROWED";
+        }
+
+        book.setAvailability(true);
+        book.setBorrowedMember(null);
+
+        return "SUCCESS";
+    }
 }

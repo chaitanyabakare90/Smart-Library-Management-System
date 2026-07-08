@@ -14,6 +14,9 @@ public class Book{
         this.author = author;
         this.category = category;
         this.isAvailable = isAvailable; 
+        // Now here we didnot written borrowedmember = null 
+        // because if do that always we have to pass null in book contructer 
+        // instead of that java automatically write borrowedmember = null this for us;
     }
 
     // Getters are to access help to access private data fields(Encapsulation)
@@ -49,10 +52,6 @@ public class Book{
     public void setBorrowedMember(Member member){
         this.borrowedBy = member;
     }
-
-
-    
-
     /*
     @Override tells the compiler:
 

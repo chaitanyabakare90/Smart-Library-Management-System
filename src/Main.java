@@ -20,6 +20,7 @@ public class Main {
             System.out.println("7. Exit");
             System.out.print("Enter Your Choice:");
             int choice = sc.nextInt();
+            System.out.println();
 
             switch (choice) {
                 case 1:
@@ -87,6 +88,35 @@ public class Main {
                         }
                     }
                     break;
+
+                case 5 :
+                    System.out.print("Enter Member_Id : ");
+                    int member_Id = sc.nextInt();
+                    System.out.print("Enter Book_Id : ");
+                    int book_Id = sc.nextInt();
+                    String status = library.borrowBook(member_Id, book_Id);
+                    if(status.equals("SUCCESS")){
+                        System.out.println("Book Borrowed Successfully");
+                    }else if(status.equals("BOOK_NOT_FOUND")){
+                        System.out.println("Book Not Found");
+                    }else if(status.equals("MEMBER_NOT_FOUND")){
+                        System.out.println("Member Not Found Please Register Your Self");
+                    }else{
+                        System.out.println("Book Is Already Borrowed");
+                    }
+                    break;
+                case 6 :
+                    System.out.print("Enter Book_Id : ");
+                    int book_id = sc.nextInt();
+                    String answer = library.returnBook(book_id);
+                    if(answer.equals("BOOK_NOT_FOUND")){
+                        System.out.println("Book Not Found");
+                    }else if(answer.equals("BOOK_NOT_BORROWED")){
+                        System.out.println("Book is not borrowed");
+                    }else{
+                        System.out.println("Book returned successfully");
+                    }
+                    break;
                 case 7 :
                     isrunning = false;
                     System.out.println("GoodBye");
@@ -95,7 +125,7 @@ public class Main {
                     System.out.println("Invalid Choice");
                     break;
             }
-            
+            System.out.println();
         }
     }
 }
