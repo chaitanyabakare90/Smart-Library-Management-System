@@ -90,4 +90,43 @@ public class Library {
 
         return "SUCCESS";
     }
+
+    public Book searchBookByTitle(String title){
+        for(Book book : books){
+            //User might enter in any case so we should ignore case
+            if(book.getTitle().equalsIgnoreCase(title)){
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public List<Book> searchBooksByAuthor(String Author){
+        List<Book> authorBooks = new ArrayList<>();
+        for(Book book : books){
+            if(book.getAuthor().equalsIgnoreCase(Author)){
+                authorBooks.add(book);
+            }
+        }
+        return authorBooks;
+    }
+    public List<Book> searchBooksByCategory(String category){
+        List<Book> categoryBooks = new ArrayList<>();
+        for(Book book : books){
+            if(book.getCategory().equalsIgnoreCase(category)){
+                categoryBooks.add(book);
+            }
+        }
+        return categoryBooks;
+    }
+
+    public void updateBookDetails(int bookId,String title,String author,String category){
+        for(Book book : books){
+            if(book.getBookId() == bookId){
+                book.setAuthor(author);
+                book.setCategory(category);
+                book.setTitle(title);
+            }
+        }
+    }
 }
