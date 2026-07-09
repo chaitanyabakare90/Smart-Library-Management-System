@@ -129,4 +129,55 @@ public class Library {
             }
         }
     }
+
+    public String deleteBook(int bookId){
+        int i = 0;
+        int idx = -1;
+        for(Book book : books){
+            if(book.getBookId() == bookId){
+                idx = i;
+                break;
+            }
+            i++;
+        }
+        if(idx == -1){
+            return "BOOK_NOT_FOUND";
+        }
+
+        // Checking book is already borrowed or not
+        //If borrowed then we can not able to delete the book
+        if(books.get(idx).isAvailable() == false){
+            return "BOOK_IS_BORROWED";
+        }
+
+        books.remove(idx);
+        return "SUCCESS";
+    }
+
+    public String deleteMember(int memberId){
+        int i = 0;
+        int idx = -1;
+
+        for(Member member : members){
+            if(member.getMemberId() == memberId){
+                idx = i;
+                break;
+            }
+            i++;
+        }
+        if(idx == -1){
+            return "MEMBER_NOT_FOUND";
+        }
+
+        // Checking if a member has borrowed a book if yes we can not able to delete him
+        for(Book book : books){
+            Member member = book.getBorrowedBy();
+            if(member != null  && member.getMemberId() == memberId){
+                return "MEMBER_HAS_BORROWED_BOOKS";    
+            }            
+        }
+
+        members.remove(idx);
+        return "SUCCESS";
+    }
 }

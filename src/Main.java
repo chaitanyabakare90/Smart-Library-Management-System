@@ -21,7 +21,9 @@ public class Main {
             System.out.println("8. Search Book By Author");
             System.out.println("9. Search Book By Category");
             System.out.println("10. Update Book Details");
-            System.out.println("11. Exit");
+            System.out.println("11. Delete Book");
+            System.out.println("12. Delete Member");
+            System.out.println("13. Exit");
             System.out.print("Enter Your Choice:");
             int choice = sc.nextInt();
             System.out.println();
@@ -184,7 +186,31 @@ public class Main {
                     }
                     break;
 
-                case 11:
+                case 11 : 
+                    System.out.print("Enter BookId: ");
+                    int bookId1 = sc.nextInt();
+                    String bookstatus = library.deleteBook(bookId1);
+                    if(bookstatus.equals("BOOK_NOT_FOUND")){
+                        System.out.println("Book Not Found");
+                    }else if(bookstatus.equals("BOOK_IS_BORROWED")){
+                        System.out.println("Book Is Already Borrowed");
+                    }else{
+                        System.out.println("Book Deleted Successfully");
+                    }
+                    break;
+                case 12 : 
+                    System.out.print("Enter MemberId: ");
+                    int memberId1 = sc.nextInt();
+                    String memberstatus = library.deleteMember(memberId1);
+                    if(memberstatus.equals("MEMBER_NOT_FOUND")){
+                        System.out.println("Member Not Found");
+                    }else if(memberstatus.equals("MEMBER_HAS_BORROWED_BOOKS")){
+                        System.out.println("Member has already borrowed books");
+                    }else{
+                        System.out.println("Member Deleted Successfully");
+                    }
+                    break;
+                case 13:
                     isrunning = false;
                     System.out.println("GoodBye");
                     break;
