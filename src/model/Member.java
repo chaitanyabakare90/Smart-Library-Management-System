@@ -1,6 +1,8 @@
 package model;
 
-public class Member {
+import java.io.Serializable;
+
+public class Member implements Serializable {
     private int member_id;
     private String name;
     private String email;

@@ -5,31 +5,59 @@ import model.Library;
 import model.Member;
 
 public class Main {
+
+    public static void displayBooks(List<Book> books) {
+        if (books.isEmpty()) {
+            System.out.println("No books available in the library.");
+        } else {
+            System.out.println("List Of Books In library");
+            for (Book book1 : books) {
+                System.out.println(book1);
+            }
+        }
+    }
+
+    public static void displayMembers(List<Member> members) {
+        if (members.isEmpty()) {
+            System.out.println("Member List is Empty");
+        } else {
+            System.out.println("========== Members ==========");
+            for (Member member1 : members) {
+                System.out.println(member1);
+            }
+        }
+    }
+
+    public static void printMenu() {
+        System.out.println("===== Smart Library Management System =====");
+        System.out.println("1. Add Book");
+        System.out.println("2. View Books");
+        System.out.println("3. Register Member");
+        System.out.println("4. View Members");
+        System.out.println("5. Borrow Book");
+        System.out.println("6. Return Book");
+        System.out.println("7. Search Book By Title");
+        System.out.println("8. Search Book By Author");
+        System.out.println("9. Search Book By Category");
+        System.out.println("10. Update Book Details");
+        System.out.println("11. Delete Book");
+        System.out.println("12. Delete Member");
+        System.out.println("13. Exit");
+        System.out.print("Enter Your Choice:");
+    }
+
     public static void main(String[] args) {
-        Library library = new Library();
+        Library library = Library.loadLibrary();
         Scanner sc = new Scanner(System.in);
         boolean isrunning = true;
         while (isrunning) {
-            System.out.println("===== Smart Library Management System =====");
-            System.out.println("1. Add Book");
-            System.out.println("2. View Books");
-            System.out.println("3. Register Member");
-            System.out.println("4. View Members");
-            System.out.println("5. Borrow Book");
-            System.out.println("6. Return Book");
-            System.out.println("7. Search Book By Title");
-            System.out.println("8. Search Book By Author");
-            System.out.println("9. Search Book By Category");
-            System.out.println("10. Update Book Details");
-            System.out.println("11. Delete Book");
-            System.out.println("12. Delete Member");
-            System.out.println("13. Exit");
-            System.out.print("Enter Your Choice:");
+            
+            printMenu();
             int choice = sc.nextInt();
             System.out.println();
 
             switch (choice) {
-                case 1:
+                case 1: // Add Book
                     System.out.print("Enter BookId :");
                     int bookId = sc.nextInt();
                     sc.nextLine();
@@ -49,21 +77,12 @@ public class Main {
                     System.out.println("Book Added Successfully");
                     break;
 
-                case 2:
+                case 2: // View Books"
                     List<Book> books = library.getBooks();
-
-                    if (books.size() == 0) {
-                        System.out.println("No books available in the library.");
-                    } else {
-                        System.out.println("List Of Books In library");
-                        for (Book book1 : books) {
-                            System.out.println(book1);
-                        }
-                    }
-
+                    displayBooks(books);
                     break;
 
-                case 3:
+                case 3: // Register Member
                     System.out.print("Enter MemberId :");
                     int memberId = sc.nextInt();
                     sc.nextLine();
@@ -83,19 +102,12 @@ public class Main {
                     System.out.println("Member registered successfully!");
                     break;
 
-                case 4:
+                case 4: // View Members
                     List<Member> members = library.getMembers();
-                    if (members.size() == 0) {
-                        System.out.println("Member List is Empty");
-                    } else {
-                        System.out.println("========== Members ==========");
-                        for (Member member1 : members) {
-                            System.out.println(member1);
-                        }
-                    }
+                    displayMembers(members);
                     break;
 
-                case 5:
+                case 5: // Borrow Book
                     System.out.print("Enter Member_Id : ");
                     int member_Id = sc.nextInt();
                     System.out.print("Enter Book_Id : ");
@@ -111,7 +123,7 @@ public class Main {
                         System.out.println("Book Is Already Borrowed");
                     }
                     break;
-                case 6:
+                case 6: // Return Book
                     System.out.print("Enter Book_Id : ");
                     int book_id = sc.nextInt();
                     String answer = library.returnBook(book_id);
@@ -124,7 +136,7 @@ public class Main {
                     }
                     break;
 
-                case 7:
+                case 7: // Search Book By Title
                     sc.nextLine();
                     System.out.print("Enter Book Title: ");
                     String Book_title = sc.nextLine();
@@ -136,37 +148,23 @@ public class Main {
                     }
                     break;
 
-                case 8:
+                case 8: // Search Book By Author
                     sc.nextLine();
                     System.out.print("Enter Author Name: ");
                     String authorName = sc.nextLine();
                     List<Book> authorsBooks = library.searchBooksByAuthor(authorName);
-                    if (authorsBooks.isEmpty()) {
-                        System.out.println("Book Not Found");
-                    } else {
-                        System.out.println("===== Authors Books Are ===== ");
-                        for (Book book3 : authorsBooks) {
-                            System.out.println(book3);
-                        }
-                    }
+                    displayBooks(authorsBooks);
                     break;
 
-                case 9:
+                case 9: // Search Book By Category
                     sc.nextLine();
                     System.out.print("Enter Category Name: ");
                     String categoryName = sc.nextLine();
                     List<Book> categoryBooks = library.searchBooksByCategory(categoryName);
-                    if (categoryBooks.isEmpty()) {
-                        System.out.println("Book Not Found");
-                    } else {
-                        System.out.println("===== Category Books Are ===== ");
-                        for (Book book4 : categoryBooks) {
-                            System.out.println(book4);
-                        }
-                    }
+                    displayBooks(categoryBooks);
                     break;
 
-                case 10:
+                case 10: // Update Book Details
                     System.out.print("Enter BookId: ");
                     int updationId = sc.nextInt();
                     sc.nextLine();
@@ -186,31 +184,34 @@ public class Main {
                     }
                     break;
 
-                case 11 : 
+                case 11: // Delete Book
                     System.out.print("Enter BookId: ");
                     int bookId1 = sc.nextInt();
                     String bookstatus = library.deleteBook(bookId1);
-                    if(bookstatus.equals("BOOK_NOT_FOUND")){
+                    if (bookstatus.equals("BOOK_NOT_FOUND")) {
                         System.out.println("Book Not Found");
-                    }else if(bookstatus.equals("BOOK_IS_BORROWED")){
+                    } else if (bookstatus.equals("BOOK_IS_BORROWED")) {
                         System.out.println("Book Is Already Borrowed");
-                    }else{
+                    } else {
                         System.out.println("Book Deleted Successfully");
                     }
                     break;
-                case 12 : 
+
+                case 12: // Delete Member
                     System.out.print("Enter MemberId: ");
                     int memberId1 = sc.nextInt();
                     String memberstatus = library.deleteMember(memberId1);
-                    if(memberstatus.equals("MEMBER_NOT_FOUND")){
+                    if (memberstatus.equals("MEMBER_NOT_FOUND")) {
                         System.out.println("Member Not Found");
-                    }else if(memberstatus.equals("MEMBER_HAS_BORROWED_BOOKS")){
+                    } else if (memberstatus.equals("MEMBER_HAS_BORROWED_BOOKS")) {
                         System.out.println("Member has already borrowed books");
-                    }else{
+                    } else {
                         System.out.println("Member Deleted Successfully");
                     }
                     break;
-                case 13:
+
+                case 13: // Exit
+                    library.saveLibrary();
                     isrunning = false;
                     System.out.println("GoodBye");
                     break;
