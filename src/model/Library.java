@@ -1,5 +1,10 @@
 package model;
 
+import enums.BorrowBookStatus;
+import enums.DeleteBookStatus;
+import enums.DeleteMemberStatus;
+import enums.ReturnBookStatus;
+
 import java.io.Serializable;
 import java.io.ObjectOutputStream;
 import java.io.File;
@@ -7,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+
 import java.util.*;
 
 public class Library implements Serializable {
@@ -55,50 +61,51 @@ public class Library implements Serializable {
         return null;
     }
 
-    public String borrowBook(int memberId, int bookId) {
+    public BorrowBookStatus borrowBook(int memberId, int bookId) {
         // Passed member and book
         Member member = getMemberByMemberId(memberId);
 
         // First checking the member is registered or not
         if (member == null) {
-            return "MEMBER_NOT_FOUND";
+            return BorrowBookStatus.MEMBER_NOT_FOUND;
         }
 
         Book book = getBookByBookId(bookId);
 
         // Now check weather book is present or not
         if (book == null) {
-            return "BOOK_NOT_FOUND";
+            return BorrowBookStatus.BOOK_NOT_FOUND;
         }
 
         // Now if book is present check its availability
         if (book.isAvailable() == false) {
-            return "BOOK_IS_ALREADY_BORROWED";
+            return BorrowBookStatus.BOOK_ALREADY_BORROWED;
         }
         book.setAvailability(false);
         book.setBorrowedMember(member);
-        return "SUCCESS";
+
+        return BorrowBookStatus.SUCCESS;
 
     }
 
-    public String returnBook(int bookId) {
+    public ReturnBookStatus returnBook(int bookId) {
         // Check Book is present or not in our library
         // ex. if user tried to return bookId = 999
         // which never existed in our library hence we are checking
         Book book = getBookByBookId(bookId);
         if (book == null) {
-            return "BOOK_NOT_FOUND";
+            return ReturnBookStatus.BOOK_NOT_FOUND;
         }
 
         //// A book can only be returned if it is currently borrowed.
         if (book.isAvailable() == true) {
-            return "BOOK_NOT_BORROWED";
+            return ReturnBookStatus.BOOK_NOT_BORROWED;
         }
 
         book.setAvailability(true);
         book.setBorrowedMember(null);
 
-        return "SUCCESS";
+        return ReturnBookStatus.SUCCESS;
     }
 
     public Book searchBookByTitle(String title) {
@@ -141,7 +148,7 @@ public class Library implements Serializable {
         }
     }
 
-    public String deleteBook(int bookId) {
+    public DeleteBookStatus deleteBook(int bookId) {
         int i = 0;
         int idx = -1;
         for (Book book : books) {
@@ -152,20 +159,20 @@ public class Library implements Serializable {
             i++;
         }
         if (idx == -1) {
-            return "BOOK_NOT_FOUND";
+            return DeleteBookStatus.BOOK_NOT_FOUND;
         }
 
         // Checking book is already borrowed or not
         // If borrowed then we can not able to delete the book
         if (books.get(idx).isAvailable() == false) {
-            return "BOOK_IS_BORROWED";
+            return DeleteBookStatus.BOOK_IS_BORROWED;
         }
 
         books.remove(idx);
-        return "SUCCESS";
+        return DeleteBookStatus.SUCCESS;
     }
 
-    public String deleteMember(int memberId) {
+    public DeleteMemberStatus deleteMember(int memberId) {
         int i = 0;
         int idx = -1;
 
@@ -177,30 +184,32 @@ public class Library implements Serializable {
             i++;
         }
         if (idx == -1) {
-            return "MEMBER_NOT_FOUND";
+            return DeleteMemberStatus.MEMBER_NOT_FOUND;
         }
 
         // Checking if a member has borrowed a book if yes we can not able to delete him
         for (Book book : books) {
             Member member = book.getBorrowedBy();
             if (member != null && member.getMemberId() == memberId) {
-                return "MEMBER_HAS_BORROWED_BOOKS";
+                return DeleteMemberStatus.MEMBER_HAS_BORROWED_BOOKS;
             }
         }
 
         members.remove(idx);
-        return "SUCCESS";
+        return DeleteMemberStatus.SUCCESS;
     }
 
     public void saveLibrary() {
 
         try (
-                FileOutputStream fos = new FileOutputStream("library.dat");
-                // passed fos in constructor becaz
-                // "Whenever ObjectOutputStream produce bytes,
-                // send them to this FileOutputStream."
-                // i.e it is telling the path
-                ObjectOutputStream out = new ObjectOutputStream(fos);) {
+            FileOutputStream fos = new FileOutputStream("library.dat");
+            // passed fos in constructor becaz
+            // "Whenever ObjectOutputStream produce bytes,
+            // send them to this FileOutputStream."
+            // i.e it is telling the path
+            ObjectOutputStream out = new ObjectOutputStream(fos);
+        ) 
+        {
             out.writeObject(this);
             // we have done this syntax becaz
             // if this line gives error then try
@@ -224,10 +233,10 @@ public class Library implements Serializable {
             ObjectInputStream in = new ObjectInputStream(fis);
         ) 
         {
-            Library library = (Library) in.readObject();
+            Library library = (Library) in.readObject(); // returns object so we need to parse
             return library;
-            
-        }catch(IOException | ClassNotFoundException e)
+
+        }catch(IOException | ClassNotFoundException e) // Multi-Catch intead of multiple catch java allow this
         {
             e.printStackTrace();
             return new Library();

@@ -1,5 +1,10 @@
 import java.util.*;
 
+import enums.BorrowBookStatus;
+import enums.DeleteBookStatus;
+import enums.DeleteMemberStatus;
+import enums.ReturnBookStatus;
+
 import model.Book;
 import model.Library;
 import model.Member;
@@ -112,12 +117,12 @@ public class Main {
                     int member_Id = sc.nextInt();
                     System.out.print("Enter Book_Id : ");
                     int book_Id = sc.nextInt();
-                    String status = library.borrowBook(member_Id, book_Id);
-                    if (status.equals("SUCCESS")) {
+                    BorrowBookStatus status = library.borrowBook(member_Id, book_Id);
+                    if (status == BorrowBookStatus.SUCCESS) {
                         System.out.println("Book Borrowed Successfully");
-                    } else if (status.equals("BOOK_NOT_FOUND")) {
+                    } else if (status == BorrowBookStatus.BOOK_NOT_FOUND){
                         System.out.println("Book Not Found");
-                    } else if (status.equals("MEMBER_NOT_FOUND")) {
+                    } else if (status == BorrowBookStatus.MEMBER_NOT_FOUND) {
                         System.out.println("Member Not Found Please Register Your Self");
                     } else {
                         System.out.println("Book Is Already Borrowed");
@@ -126,10 +131,10 @@ public class Main {
                 case 6: // Return Book
                     System.out.print("Enter Book_Id : ");
                     int book_id = sc.nextInt();
-                    String answer = library.returnBook(book_id);
-                    if (answer.equals("BOOK_NOT_FOUND")) {
+                    ReturnBookStatus returnStatus = library.returnBook(book_id);
+                    if (returnStatus == ReturnBookStatus.BOOK_NOT_FOUND) {
                         System.out.println("Book Not Found");
-                    } else if (answer.equals("BOOK_NOT_BORROWED")) {
+                    } else if (returnStatus == ReturnBookStatus.BOOK_NOT_BORROWED) {
                         System.out.println("Book is not borrowed");
                     } else {
                         System.out.println("Book returned successfully");
@@ -187,10 +192,10 @@ public class Main {
                 case 11: // Delete Book
                     System.out.print("Enter BookId: ");
                     int bookId1 = sc.nextInt();
-                    String bookstatus = library.deleteBook(bookId1);
-                    if (bookstatus.equals("BOOK_NOT_FOUND")) {
+                    DeleteBookStatus deleteBookStatus = library.deleteBook(bookId1);
+                    if (deleteBookStatus == DeleteBookStatus.BOOK_NOT_FOUND) {
                         System.out.println("Book Not Found");
-                    } else if (bookstatus.equals("BOOK_IS_BORROWED")) {
+                    } else if (deleteBookStatus == DeleteBookStatus.BOOK_IS_BORROWED) {
                         System.out.println("Book Is Already Borrowed");
                     } else {
                         System.out.println("Book Deleted Successfully");
@@ -200,10 +205,10 @@ public class Main {
                 case 12: // Delete Member
                     System.out.print("Enter MemberId: ");
                     int memberId1 = sc.nextInt();
-                    String memberstatus = library.deleteMember(memberId1);
-                    if (memberstatus.equals("MEMBER_NOT_FOUND")) {
+                    DeleteMemberStatus deleteMemberStatus = library.deleteMember(memberId1);
+                    if (deleteMemberStatus == DeleteMemberStatus.MEMBER_NOT_FOUND) {
                         System.out.println("Member Not Found");
-                    } else if (memberstatus.equals("MEMBER_HAS_BORROWED_BOOKS")) {
+                    } else if (deleteMemberStatus == DeleteMemberStatus.MEMBER_HAS_BORROWED_BOOKS) {
                         System.out.println("Member has already borrowed books");
                     } else {
                         System.out.println("Member Deleted Successfully");
@@ -221,5 +226,6 @@ public class Main {
             }
             System.out.println();
         }
+        sc.close();
     }
 }
