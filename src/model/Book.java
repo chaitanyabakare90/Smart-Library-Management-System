@@ -2,7 +2,9 @@ package model;
 import java.io.Serializable;
 
 
-public class Book implements Serializable{
+public class Book implements Serializable,Comparable<Book>{
+
+    private static final long serialVersionUID = 1L;
     private int bookId;
     private String title;
     private String author;
@@ -88,5 +90,9 @@ public class Book implements Serializable{
                 "\nCategory :" + category +
                 "\nAvailable :" + (isAvailable ? "Yes" : "No");
                 
+    }
+    @Override
+    public int compareTo(Book other){
+        return Integer.compare(this.bookId, other.bookId);
     }
 }

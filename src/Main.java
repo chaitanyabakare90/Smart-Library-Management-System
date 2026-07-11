@@ -8,10 +8,12 @@ import enums.ReturnBookStatus;
 import model.Book;
 import model.Library;
 import model.Member;
+import repository.LibraryRepository;
 
 public class Main {
 
     public static void displayBooks(List<Book> books) {
+        Collections.sort(books);
         if (books.isEmpty()) {
             System.out.println("No books available in the library.");
         } else {
@@ -52,7 +54,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Library library = Library.loadLibrary();
+        LibraryRepository repository = new LibraryRepository();
+        // Only static method is called using class name otherwise need to create object
+        Library library = repository.loadLibrary();
         Scanner sc = new Scanner(System.in);
         boolean isrunning = true;
         while (isrunning) {
@@ -216,7 +220,7 @@ public class Main {
                     break;
 
                 case 13: // Exit
-                    library.saveLibrary();
+                    repository.saveLibrary(library);
                     isrunning = false;
                     System.out.println("GoodBye");
                     break;
